@@ -98,6 +98,31 @@ df_genero = df_filtrado.melt(
 )
 #fig2 = px.pie(df_genero, values='Cantidad', names='Sexo', title='Cantidad por genero',color="Cantidad")
 #c2.plotly_chart(fig2,use_container_width=True)
+romana = df[df["Provincia"].isin(["La Romana"])]["Total"].sum()
+samana = df[df["Provincia"].isin(["Samaná"])]["Total"].sum()
+ptplata = df[df["Provincia"].isin(["Puerto Plata"])]["Total"].sum()
+puntacana = df[df["Provincia"].isin(["La Altagracia"])]["Total"].sum()
+nagua = df[df["Provincia"].isin(["María Trinidad Sánchez"])]["Total"].sum()
+
+turistic = pd.DataFrame({
+    "Provincias":["La Romana","Samana","Puerto Plata","La Altagracia","Maria Trinidad Sánchez"],
+     "Poblacion":[romana,samana,ptplata,puntacana,nagua]
+})
+fig6 = px.bar(turistic,x="Provincias",y="Poblacion",title="Poblacion de provincias turisticas",color="Poblacion")
+
+mtcristi = df[df["Provincia"].isin(["Monte Cristi"])]["Total"].sum()
+dajabon = df[df["Provincia"].isin(["Dajabón"])]["Total"].sum()
+elpina = df[df["Provincia"].isin(["Elías Piña"])]["Total"].sum()
+indep = df[df["Provincia"].isin(["Independencia"])]["Total"].sum()
+pedern = df[df["Provincia"].isin(["Pedernales"])]["Total"].sum()
+
+fronterizas = pd.DataFrame({
+      "Provincias":["Monte Cristi","Dajabon","Elias Piña","Independencia","Pedernales"],
+     "Poblacion":[mtcristi,dajabon,elpina,indep,pedern]
+})
+fig7 = px.bar(fronterizas,x="Provincias",y="Poblacion", title="Poblacion de provincias fronterizas",color="Poblacion")
+st.plotly_chart(fig6,use_container_width=True)
+st.plotly_chart(fig7,use_container_width=True)
 st.plotly_chart(fig3,use_container_width=True)
 
 
