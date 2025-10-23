@@ -25,9 +25,6 @@ ptotalf = total_hombresf + total_mujeresf
 restf = total_hombresf - total_mujeresf
 rest2f = total_mujeresf - total_hombresf
 
-
-
-
 col1, col2, col3 = st.columns(3)
 if filt:
    col1.metric(label="Poblacion total", value=f"{ptotalf:,}",border=True)
@@ -64,15 +61,43 @@ fig = px.bar(
     height=500, 
      width=2000 
 )
-fig3 = px.pie(df_sorted,values="Total",names="Provincia",title="Porcentage de poblacion por provincia",color="Provincia")
 fig.update_layout(yaxis={'categoryorder':'total ascending'}) 
 fig.update_layout(width=1500)
+st.plotly_chart(fig, use_container_width=True)
+fig3 = px.pie(df_sorted,values="Total",names="Provincia",title="Porcentage de poblacion por provincia",color="Provincia")
+
 c1,c2 = st.columns(2)
-c1.plotly_chart(fig, use_container_width=True)
+sur = df[df["Provincia"].isin(["Azua", "Barahona","Bahoruco","Pedernales",
+        "Peravia","Elías Piña","San Juan","San José de Ocoa","San Cristóbal","Independencia"])]["Total"].sum()
+
+norte = df[df["Provincia"].isin(["Santiago","Duarte","Puerto Plata","Samaná","María Trinidad Sánchez",
+         "Valverde","Santiago Rodríguez","Hermanas Mirabal","Monseñor Nouel","Sánchez Ramírez","Monte Cristi","Monseñor Nouel",
+                                "La Vega","Espaillat","Dajabón"])]["Total"].sum()
+
+este = df[df["Provincia"].isin(["La Romana","Hato Mayor","Distrito Nacional","Santo Domingo",
+        "El Seibo","San Pedro de Macorís","La Altagracia","Monte Plata"])]["Total"].sum()
+
+df_regiones = pd.DataFrame({
+    "Region":["Este","Sur","Norte"],
+    "Poblacion":[este,sur,norte]
+})
+fig4 = px.bar(df_regiones,x="Region",y="Poblacion",title="Poblacion por region",color="Region")
+c1.plotly_chart(fig4,use_container_width=True)
+
 df_sexo = pd.DataFrame({
     "Sexo": ["Hombres", "Mujeres"],
     "Cantidad": [total_hombres, total_mujeres]
 })
-fig2 = px.pie(df_sexo, values='Cantidad', names='Sexo', title='Cantidad por genero',color="Sexo")
-c2.plotly_chart(fig2,use_container_width=True)
+f = px.pie(df_sexo,values="Cantidad",names="Sexo",title="Porcentage por genero",color="Cantidad")
+c2.plotly_chart(f,use_container_width=True)
+df_genero = df_filtrado.melt(
+    id_vars=["Provincia"], 
+    value_vars=["Hombres", "Mujeres"], 
+    var_name="Sexo", 
+    value_name="Cantidad"
+)
+#fig2 = px.pie(df_genero, values='Cantidad', names='Sexo', title='Cantidad por genero',color="Cantidad")
+#c2.plotly_chart(fig2,use_container_width=True)
 st.plotly_chart(fig3,use_container_width=True)
+
+
