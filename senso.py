@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Leer el archivo CSS y aplicarlo
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 df = pd.read_csv('Data/poblacion_rd_csv.txt')
 cl1,cl2 = st.columns(2)
